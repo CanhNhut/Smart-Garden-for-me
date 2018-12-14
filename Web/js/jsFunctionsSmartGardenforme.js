@@ -76,12 +76,14 @@
         $(document).ready(function(){
             $.get("https://api.thingspeak.com/update?api_key=WQ2OV6P18T3F4ZET",
             {
-              field7: data
+              field7: data,
+			  status: "Field 7 = " + data
             },
             function(data1,status){
 				if(data1 != 0){
 				alert("Data: " + data1 + "\nStatus: " + status);
 				console.log(`${status}`)
+				
 				}
 				else
 				{
@@ -96,7 +98,8 @@
         $(document).ready(function(){
             $.get("https://api.thingspeak.com/update?api_key=WQ2OV6P18T3F4ZET",
             {
-              field8: data
+              field8: data,
+			  status: "Field 8 = " + data
             },
             function(data2,status){
 				if( data2 != 0) {
@@ -112,6 +115,7 @@
           });
       });
 	  }
+	  
 
 	
 
