@@ -23,12 +23,12 @@ int range = 0;
 int DataLamp = 0;
 int DataPump = 0;
  
-char ssid[] = "DPSG";   // your network SSID (name) 
-char pass[] = "hoilamchi1998";   // your network password
+char ssid[] = "RedmiS2";   // your network SSID (name) 
+char pass[] = "19980804";   // your network password
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 String myStatus = "";
 
-//DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);
  
 WiFiClient  client;
 LiquidCrystal_I2C lcd(0x3f, 20, 4);  
@@ -43,15 +43,26 @@ void setup()
   pinMode(pin_bom,OUTPUT);  
   digitalWrite(pin_den,LOW);
   digitalWrite(pin_bom,LOW);
- 
+  
   ThingSpeak.begin(client);  // Initialize ThingSpeak
+
+  dht.begin();
 }
  
 void loop()
-{
-  //Temperature = dht.readTemperature();
-  //Humidity = dht.readHumidity(); 
-  Soil_Moisture = ( 100.00 - ( (analogRead(A0)/1023.00) * 100.00));
+{  
+  Humidity = int(dht.readHumidity());
+  Temperature = int(dht.readTemperature());
+
+  while(Humidity > 1000)
+  {
+     Humidity = int(dht.readHumidity());
+  }
+  while(Temperature > 1000)
+  {
+    Temperature = int(dht.readTemperature());
+  }
+  Soil_Moisture = int( 100.00 - ( (analogRead(A0)/1023.00) * 100.00));
   SensorFire = analogRead(pin_flame);                                                                           
   range = map(SensorFire, 0, 1024, 0, 3);
 
@@ -70,7 +81,7 @@ void loop()
   lcd.print(Temperature);
   lcd.print(" oC ");
  
-  lcd.setCursor(11, 1);
+  lcd.setCursor(10, 1);
   lcd.print("Humi:");
   lcd.print(Humidity);
   lcd.print(" % ");
@@ -82,12 +93,12 @@ void loop()
   
   if (range == 0 || range == 1)
   {
-    lcd.setCursor(11, 2);
+    lcd.setCursor(10, 2);
     lcd.print("Fire: Yes");
   }
   else
   {
-    lcd.setCursor(11, 2);
+    lcd.setCursor(10, 2);
     lcd.print("Fire: No ");
   }
  
@@ -103,6 +114,7 @@ void loop()
     lcd.setCursor(0, 3);
     lcd.print("Lamp: ");
     lcd.print(data_field_7);
+    lcd.print("   ");
     if(data_field_7 == 1)
     {
       MoDen();
@@ -118,14 +130,15 @@ void loop()
 
   if(data_field_8 == -1)
   {
-    lcd.setCursor(11, 3);
+    lcd.setCursor(10, 3);
     lcd.print("Pump: NO ");
   }
   else
   {
-    lcd.setCursor(11, 3);
+    lcd.setCursor(10, 3);
     lcd.print("Pump: ");
     lcd.print(data_field_8);
+    lcd.print("  ");
     if(data_field_8 == 1)
     {
       MoMayBom();
@@ -136,5 +149,5 @@ void loop()
     }
   }
   Sendata();
-  delay(5000);
+  delay(1000);
 }

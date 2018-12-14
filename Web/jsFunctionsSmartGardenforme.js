@@ -78,15 +78,9 @@
             {
               field7: data
             },
-            function(data1,status){
-				if(data1 != 0){
-				alert("Data: " + data1 + "\nStatus: " + status);
+            function(data,status){
+				alert("Data: " + data + "\nStatus: " + status);
 				console.log(`${status}`)
-				}
-				else
-				{
-					changeField7(data);
-				}
 				
           });
       });
@@ -98,15 +92,9 @@
             {
               field8: data
             },
-            function(data2,status){
-				if( data2 != 0) {
-				alert("Data: " + data2 + "\nStatus: " + status);
+            function(data,status){
+				alert("Data: " + data + "\nStatus: " + status);
 				console.log(`${status}`)
-				}
-				else
-				{
-					changeField8(data);
-				}
 				
 				
           });
